@@ -77,6 +77,10 @@ public:
 
 		bool transparent_bg;
 
+// Addition @samuelbigos - Added viewport cull mask from @TheDuriel
+		int canvas_layer_mask;
+// End addition @samuelbigos
+
 		struct CanvasKey {
 
 			int64_t stacking;
@@ -185,6 +189,10 @@ public:
 
 	void viewport_set_global_canvas_transform(RID p_viewport, const Transform2D &p_transform);
 	void viewport_set_canvas_stacking(RID p_viewport, RID p_canvas, int p_layer, int p_sublayer);
+
+// Addition @samuelbigos - Added viewport cull mask from @TheDuriel
+	void viewport_set_canvas_layer_mask(RID p_viewport, int mask);
+// End addition @samuelbigos
 
 	void viewport_set_shadow_atlas_size(RID p_viewport, int p_size);
 	void viewport_set_shadow_atlas_quadrant_subdivision(RID p_viewport, int p_quadrant, int p_subdiv);

@@ -7140,7 +7140,9 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 			image_format = Image::FORMAT_RGBA8;
 		}
 	} else {
-		color_internal_format = GL_RGBA16F;
+// Addition @samuelbigos - Increase texture format precision
+		color_internal_format = GL_RGBA32F;
+// End addition @samuelbigos
 		color_format = GL_RGBA;
 		color_type = GL_HALF_FLOAT;
 		image_format = Image::FORMAT_RGBAH;
