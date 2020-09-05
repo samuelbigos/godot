@@ -303,6 +303,8 @@ void VisualServerViewport::draw_viewports() {
 
 		VSG::storage->render_target_clear_used(vp->render_target);
 
+		printf_s("Drawing viewport: %s", vp->debug_name);
+
 		if (vp->use_arvr && arvr_interface.is_valid()) {
 			// override our size, make sure it matches our required size
 			vp->size = arvr_interface->get_render_targetsize();
@@ -756,6 +758,12 @@ void VisualServerViewport::viewport_set_canvas_layer_mask(RID p_viewport, int ma
 	viewport->canvas_layer_mask = mask;
 }
 // End addition @samuelbigos
+
+void VisualServerViewport::viewport_set_debug_name(RID p_viewport, String name) {
+	Viewport *viewport = viewport_owner.getornull(p_viewport);
+	ERR_FAIL_COND(!viewport);
+	viewport->debug_name = name;
+}
 
 VisualServerViewport::VisualServerViewport() {
 }

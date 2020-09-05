@@ -569,6 +569,10 @@ public:
 	bool get_canvas_cull_mask_bit(int p_layer) const;
 // End addition @samuelbigos
 
+	String debug_name;
+	void set_debug_name(String s_debug_name);
+	String get_debug_name() const;
+
 	Viewport();
 	~Viewport();
 };

@@ -3136,6 +3136,14 @@ bool Viewport::get_canvas_cull_mask_bit(int p_layer) const {
 }
 // End addition @samuelbigos
 
+void Viewport::set_debug_name(String name) {
+	debug_name = name;
+}
+
+String Viewport::get_debug_name() const {
+	return debug_name;
+}
+
 void Viewport::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_use_arvr", "use"), &Viewport::set_use_arvr);
@@ -3268,6 +3276,9 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_canvas_cull_mask_bit", "layer"), &Viewport::get_canvas_cull_mask_bit);
 // End addition @samuelbigos
 
+	ClassDB::bind_method(D_METHOD("set_debug_name", "name"), &Viewport::set_debug_name);
+	ClassDB::bind_method(D_METHOD("get_debug_name"), &Viewport::get_debug_name);
+
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "arvr"), "set_use_arvr", "use_arvr");
 
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_size", "get_size");
@@ -3309,6 +3320,8 @@ void Viewport::_bind_methods() {
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "canvas_cull_mask", PROPERTY_HINT_LAYERS_2D_RENDER), "set_canvas_cull_mask", "get_canvas_cull_mask");
 // End addition @samuelbigos
+
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "debug_name", PROPERTY_HINT_NONE), "set_debug_name", "get_debug_name");
 
 	ADD_SIGNAL(MethodInfo("size_changed"));
 	ADD_SIGNAL(MethodInfo("gui_focus_changed", PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Control")));

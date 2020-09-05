@@ -52,6 +52,8 @@ public:
 		RID camera;
 		RID scenario;
 
+		String debug_name;
+
 		VS::ViewportUpdateMode update_mode;
 		RID render_target;
 		RID render_target_texture;
@@ -193,6 +195,8 @@ public:
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
 	void viewport_set_canvas_layer_mask(RID p_viewport, int mask);
 // End addition @samuelbigos
+
+	void viewport_set_debug_name(RID p_viewport, String name);
 
 	void viewport_set_shadow_atlas_size(RID p_viewport, int p_size);
 	void viewport_set_shadow_atlas_quadrant_subdivision(RID p_viewport, int p_quadrant, int p_subdiv);
