@@ -624,6 +624,9 @@ public:
 	virtual void viewport_set_canvas_layer_mask(RID p_viewport, int mask) = 0;
 	// End addition @samuelbigos
 
+	virtual void viewport_set_debug_name(RID p_viewport, String name) = 0;
+	virtual void viewport_set_render_order(RID p_viewport, int order) = 0;
+
 	enum ViewportUpdateMode {
 		VIEWPORT_UPDATE_DISABLED,
 		VIEWPORT_UPDATE_ONCE, //then goes to disabled, must be manually updated

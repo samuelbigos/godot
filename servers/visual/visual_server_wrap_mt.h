@@ -418,6 +418,9 @@ public:
 	FUNC2(viewport_set_canvas_layer_mask, RID, int)
 // End addition @samuelbigos
 
+	FUNC2(viewport_set_debug_name, RID, String)
+	FUNC2(viewport_set_render_order, RID, int)
+
 	//this passes directly to avoid stalling, but it's pretty dangerous, so don't call after freeing a viewport
 	virtual int viewport_get_render_info(RID p_viewport, ViewportRenderInfo p_info) {
 		return visual_server->viewport_get_render_info(p_viewport, p_info);

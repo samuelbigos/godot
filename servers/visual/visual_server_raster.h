@@ -490,6 +490,9 @@ public:
 	BIND2(viewport_set_canvas_layer_mask, RID, int)
 	// End addition @samuelbigos
 
+	BIND2(viewport_set_debug_name, RID, String)
+	BIND2(viewport_set_render_order, RID, int)
+
 	BIND2R(int, viewport_get_render_info, RID, ViewportRenderInfo)
 	BIND2(viewport_set_debug_draw, RID, ViewportDebugDraw)
 

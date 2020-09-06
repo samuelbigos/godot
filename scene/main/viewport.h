@@ -573,6 +573,10 @@ public:
 	void set_debug_name(String s_debug_name);
 	String get_debug_name() const;
 
+	int render_order;
+	void set_render_order(int i_render_order);
+	int get_render_order() const;
+
 	Viewport();
 	~Viewport();
 };

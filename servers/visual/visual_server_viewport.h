@@ -53,6 +53,7 @@ public:
 		RID scenario;
 
 		String debug_name;
+		int render_order;
 
 		VS::ViewportUpdateMode update_mode;
 		RID render_target;
@@ -141,6 +142,14 @@ public:
 			bool left_to_screen = p_left->viewport_to_screen_rect.size != Size2();
 			bool right_to_screen = p_right->viewport_to_screen_rect.size != Size2();
 
+			if (p_left->render_order < p_right->render_order) {
+
+				return true;
+			}
+			if (p_left->render_order > p_right->render_order) {
+
+				return false;
+			}
 			if (left_to_screen == right_to_screen) {
 
 				return p_left->parent == p_right->self;
@@ -197,6 +206,7 @@ public:
 // End addition @samuelbigos
 
 	void viewport_set_debug_name(RID p_viewport, String name);
+	void viewport_set_render_order(RID p_viewport, int order);
 
 	void viewport_set_shadow_atlas_size(RID p_viewport, int p_size);
 	void viewport_set_shadow_atlas_quadrant_subdivision(RID p_viewport, int p_quadrant, int p_subdiv);

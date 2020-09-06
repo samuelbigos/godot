@@ -294,6 +294,8 @@ void Viewport::_notification(int p_what) {
 			VisualServer::get_singleton()->viewport_set_canvas_layer_mask(viewport, canvas_cull_mask);
 // End addition @samuelbigos
 
+			VisualServer::get_singleton()->viewport_set_debug_name(viewport, debug_name);
+
 			_update_listener();
 			_update_listener_2d();
 
@@ -3138,10 +3140,20 @@ bool Viewport::get_canvas_cull_mask_bit(int p_layer) const {
 
 void Viewport::set_debug_name(String name) {
 	debug_name = name;
+	VisualServer::get_singleton()->viewport_set_debug_name(viewport, name);
 }
 
 String Viewport::get_debug_name() const {
 	return debug_name;
+}
+
+void Viewport::set_render_order(int order) {
+	render_order = order;
+	VisualServer::get_singleton()->viewport_set_render_order(viewport, order);
+}
+
+int Viewport::get_render_order() const {
+	return render_order;
 }
 
 void Viewport::_bind_methods() {
@@ -3279,6 +3291,9 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_debug_name", "name"), &Viewport::set_debug_name);
 	ClassDB::bind_method(D_METHOD("get_debug_name"), &Viewport::get_debug_name);
 
+	ClassDB::bind_method(D_METHOD("set_render_order", "order"), &Viewport::set_render_order);
+	ClassDB::bind_method(D_METHOD("get_render_order"), &Viewport::get_render_order);
+
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "arvr"), "set_use_arvr", "use_arvr");
 
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_size", "get_size");
@@ -3322,6 +3337,8 @@ void Viewport::_bind_methods() {
 // End addition @samuelbigos
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "debug_name", PROPERTY_HINT_NONE), "set_debug_name", "get_debug_name");
+
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_order", PROPERTY_HINT_NONE), "set_render_order", "get_render_order");
 
 	ADD_SIGNAL(MethodInfo("size_changed"));
 	ADD_SIGNAL(MethodInfo("gui_focus_changed", PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Control")));
@@ -3475,6 +3492,8 @@ Viewport::Viewport() {
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
 	canvas_cull_mask = 0xfffff; // by default show everything
 // End addition @samuelbigos
+
+	render_order = 0;
 }
 
 Viewport::~Viewport() {
