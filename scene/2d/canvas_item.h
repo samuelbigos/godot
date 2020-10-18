@@ -225,7 +225,7 @@ private:
 	static CanvasItem *current_item_drawn;
 
 	// Addition @samuelbigos - Added viewport cull mask from @TheDuriel
-	int layers;
+	int viewport_layers;
 	// End addition @samuelbigos
 
 protected:

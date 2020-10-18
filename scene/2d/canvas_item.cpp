@@ -536,8 +536,8 @@ void CanvasItem::_enter_canvas() {
 		VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas);
 
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
-		VisualServer::get_singleton()->canvas_item_set_layer_mask(canvas_item, layers);
-// End addition @samuelbigos
+		VisualServer::get_singleton()->canvas_item_set_layer_mask(canvas_item, viewport_layers);
+		// End addition @samuelbigos
 
 		group = "root_canvas" + itos(canvas.get_id());
 
@@ -557,8 +557,8 @@ void CanvasItem::_enter_canvas() {
 		VisualServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
 
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
-		VisualServer::get_singleton()->canvas_item_set_layer_mask(canvas_item, layers);
-// End addition @samuelbigos
+		VisualServer::get_singleton()->canvas_item_set_layer_mask(canvas_item, viewport_layers);
+		// End addition @samuelbigos
 	}
 
 	pending_update = false;
@@ -1247,7 +1247,7 @@ void CanvasItem::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_mask", PROPERTY_HINT_LAYERS_2D_RENDER), "set_light_mask", "get_light_mask");
 
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "layers", PROPERTY_HINT_LAYERS_2D_RENDER), "set_layer_mask", "get_layer_mask");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "viewport_layers", PROPERTY_HINT_LAYERS_2D_RENDER), "set_layer_mask", "get_layer_mask");
 // End addition @samuelbigos
 
 	ADD_GROUP("Material", "");
@@ -1340,27 +1340,27 @@ int CanvasItem::get_canvas_layer() const {
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
 void CanvasItem::set_layer_mask(int p_mask) {
 
-	layers = p_mask;
-	VisualServer::get_singleton()->canvas_item_set_layer_mask(canvas_item, layers);
+	viewport_layers = p_mask;
+	VisualServer::get_singleton()->canvas_item_set_layer_mask(canvas_item, viewport_layers);
 }
 
 int CanvasItem::get_layer_mask() const {
 
-	return layers;
+	return viewport_layers;
 }
 
 void CanvasItem::set_layer_mask_bit(int p_layer, bool p_enable) {
 	ERR_FAIL_INDEX(p_layer, 32);
 	if (p_enable) {
-		set_layer_mask(layers | (1 << p_layer));
+		set_layer_mask(viewport_layers | (1 << p_layer));
 	} else {
-		set_layer_mask(layers & (~(1 << p_layer)));
+		set_layer_mask(viewport_layers & (~(1 << p_layer)));
 	}
 }
 
 bool CanvasItem::get_layer_mask_bit(int p_layer) const {
 	ERR_FAIL_INDEX_V(p_layer, 32, false);
-	return (layers & (1 << p_layer));
+	return (viewport_layers & (1 << p_layer));
 }
 // End addition @samuelbigos
 
@@ -1385,8 +1385,8 @@ CanvasItem::CanvasItem() :
 	notify_transform = false;
 	light_mask = 1;
 // Addition @samuelbigos - Added viewport cull mask from @TheDuriel
-	layers = 1;
-// End addition @samuelbigos
+	viewport_layers = 1;
+	// End addition @samuelbigos
 
 	C = NULL;
 }
