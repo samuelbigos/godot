@@ -5874,9 +5874,9 @@ void RasterizerStorageRD::_update_render_target(RenderTarget *rt) {
 		return;
 	}
 	//until we implement support for HDR monitors (and render target is attached to screen), this is enough.
-	rt->color_format = RD::DATA_FORMAT_R8G8B8A8_UNORM;
-	rt->color_format_srgb = RD::DATA_FORMAT_R8G8B8A8_SRGB;
-	rt->image_format = rt->flags[RENDER_TARGET_TRANSPARENT] ? Image::FORMAT_RGBA8 : Image::FORMAT_RGB8;
+	rt->color_format = RD::DATA_FORMAT_R16G16B16A16_UNORM;
+	rt->color_format_srgb = RD::DATA_FORMAT_R16G16B16A16_UNORM;
+	rt->image_format = rt->flags[RENDER_TARGET_TRANSPARENT] ? Image::FORMAT_RGBAF : Image::FORMAT_RGB8;
 
 	RD::TextureFormat rd_format;
 	RD::TextureView rd_view;
