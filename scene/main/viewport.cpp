@@ -1366,6 +1366,17 @@ Viewport::ClearMode Viewport::get_clear_mode() const {
 	return clear_mode;
 }
 
+void Viewport::set_format_override(FormatOverride p_format) {
+
+	format_override = p_format;
+	VS::get_singleton()->viewport_set_format_override(viewport, VS::ViewportFormatOverride(p_format));
+}
+
+Viewport::FormatOverride Viewport::get_format_override() const {
+
+	return format_override;
+}
+
 void Viewport::set_shadow_atlas_size(int p_size) {
 
 	if (shadow_atlas_size == p_size)
@@ -3197,6 +3208,9 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_clear_mode", "mode"), &Viewport::set_clear_mode);
 	ClassDB::bind_method(D_METHOD("get_clear_mode"), &Viewport::get_clear_mode);
 
+	ClassDB::bind_method(D_METHOD("set_format_override", "format"), &Viewport::set_format_override);
+	ClassDB::bind_method(D_METHOD("get_format_override"), &Viewport::get_format_override);
+
 	ClassDB::bind_method(D_METHOD("set_update_mode", "mode"), &Viewport::set_update_mode);
 	ClassDB::bind_method(D_METHOD("get_update_mode"), &Viewport::get_update_mode);
 
@@ -3314,6 +3328,9 @@ void Viewport::_bind_methods() {
 	ADD_GROUP("Render Target", "render_target_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "render_target_v_flip"), "set_vflip", "get_vflip");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_target_clear_mode", PROPERTY_HINT_ENUM, "Always,Never,Next Frame"), "set_clear_mode", "get_clear_mode");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_target_format_override", PROPERTY_HINT_ENUM,
+		"None,GL_RGB4,GL_RGB8,GL_R16F,GL_RG16F,GL_RGB16F,GL_RGBA16F,GL_R32F,GL_RG32F,GL_RGB32F,GL_RGBA32F,GL_RGBA16UI"
+	), "set_format_override", "get_format_override");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_target_update_mode", PROPERTY_HINT_ENUM, "Disabled,Once,When Visible,Always"), "set_update_mode", "get_update_mode");
 	ADD_GROUP("Audio Listener", "audio_listener_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "audio_listener_enable_2d"), "set_as_audio_listener_2d", "is_audio_listener_2d");
@@ -3386,6 +3403,12 @@ void Viewport::_bind_methods() {
 	BIND_ENUM_CONSTANT(CLEAR_MODE_ALWAYS);
 	BIND_ENUM_CONSTANT(CLEAR_MODE_NEVER);
 	BIND_ENUM_CONSTANT(CLEAR_MODE_ONLY_NEXT_FRAME);
+
+	BIND_ENUM_CONSTANT(FORMAT_OVERRIDE_NONE);
+	BIND_ENUM_CONSTANT(FORMAT_OVERRIDE_GL_RGB4);
+	BIND_ENUM_CONSTANT(FORMAT_OVERRIDE_GL_RGB8);
+	BIND_ENUM_CONSTANT(FORMAT_OVERRIDE_GL_R32F);
+	BIND_ENUM_CONSTANT(FORMAT_OVERRIDE_GL_RG32F);
 }
 
 void Viewport::_subwindow_visibility_changed() {
@@ -3478,6 +3501,7 @@ Viewport::Viewport() {
 	usage = USAGE_3D;
 	debug_draw = DEBUG_DRAW_DISABLED;
 	clear_mode = CLEAR_MODE_ALWAYS;
+	format_override = FORMAT_OVERRIDE_NONE;
 
 	snap_controls_to_pixels = true;
 	physics_last_mouse_state.alt = false;

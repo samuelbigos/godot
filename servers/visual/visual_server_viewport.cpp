@@ -303,9 +303,6 @@ void VisualServerViewport::draw_viewports() {
 
 		VSG::storage->render_target_clear_used(vp->render_target);
 
-		//if (vp->debug_name.length() > 0)
-		//	print_line(vformat("Drawing viewport: %s", vp->debug_name));
-
 		if (vp->use_arvr && arvr_interface.is_valid()) {
 			// override our size, make sure it matches our required size
 			vp->size = arvr_interface->get_render_targetsize();
@@ -344,6 +341,11 @@ void VisualServerViewport::draw_viewports() {
 
 			VSG::scene_render->set_debug_draw_mode(vp->debug_draw);
 			VSG::storage->render_info_begin_capture();
+
+			if (vp->debug_name.length() > 0) {
+
+				//print_line(vformat("Drawing viewport: %s", vp->debug_name));
+			}
 
 			// render standard mono camera
 			_draw_viewport(vp);
@@ -475,6 +477,14 @@ void VisualServerViewport::viewport_set_render_direct_to_screen(RID p_viewport, 
 		VSG::storage->render_target_set_size(viewport->render_target, viewport->viewport_to_screen_rect.size.x, viewport->viewport_to_screen_rect.size.y);
 		VSG::storage->render_target_set_position(viewport->render_target, viewport->viewport_to_screen_rect.position.x, viewport->viewport_to_screen_rect.position.y);
 	}
+}
+
+void VisualServerViewport::viewport_set_format_override(RID p_viewport, VS::ViewportFormatOverride p_format) {
+
+	Viewport *viewport = viewport_owner.getornull(p_viewport);
+	ERR_FAIL_COND(!viewport);
+
+	VSG::storage->render_target_set_format_override(viewport->render_target, p_format);
 }
 
 void VisualServerViewport::viewport_detach(RID p_viewport) {

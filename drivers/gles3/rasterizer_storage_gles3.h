@@ -1372,6 +1372,8 @@ public:
 
 		bool flags[RENDER_TARGET_FLAG_MAX];
 
+		VS::ViewportFormatOverride format_override;
+
 		bool used_in_frame;
 		VS::ViewportMSAA msaa;
 
@@ -1394,6 +1396,7 @@ public:
 			flags[RENDER_TARGET_HDR] = true;
 			buffers.active = false;
 			buffers.effects_active = false;
+			format_override = VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_NONE;
 		}
 	};
 
@@ -1412,6 +1415,8 @@ public:
 	virtual bool render_target_was_used(RID p_render_target);
 	virtual void render_target_clear_used(RID p_render_target);
 	virtual void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa);
+
+	virtual void render_target_set_format_override(RID p_render_target, VS::ViewportFormatOverride p_format);
 
 	/* CANVAS SHADOW */
 

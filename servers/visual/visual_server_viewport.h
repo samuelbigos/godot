@@ -181,6 +181,8 @@ public:
 	void viewport_set_update_mode(RID p_viewport, VS::ViewportUpdateMode p_mode);
 	void viewport_set_vflip(RID p_viewport, bool p_enable);
 
+	void viewport_set_format_override(RID p_viewport, VS::ViewportFormatOverride p_format);
+
 	void viewport_set_clear_mode(RID p_viewport, VS::ViewportClearMode p_clear_mode);
 
 	RID viewport_get_texture(RID p_viewport) const;

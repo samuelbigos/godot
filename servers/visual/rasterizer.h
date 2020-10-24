@@ -565,6 +565,8 @@ public:
 	virtual RID render_target_get_texture(RID p_render_target) const = 0;
 	virtual void render_target_set_external_texture(RID p_render_target, unsigned int p_texture_id) = 0;
 	virtual void render_target_set_flag(RID p_render_target, RenderTargetFlags p_flag, bool p_value) = 0;
+	virtual void render_target_set_format_override(RID p_render_target, VS::ViewportFormatOverride p_format) = 0;
+
 	virtual bool render_target_was_used(RID p_render_target) = 0;
 	virtual void render_target_clear_used(RID p_render_target) = 0;
 	virtual void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa) = 0;

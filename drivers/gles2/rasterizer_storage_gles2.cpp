@@ -5331,6 +5331,12 @@ void RasterizerStorageGLES2::render_target_set_flag(RID p_render_target, RenderT
 	}
 }
 
+void RasterizerStorageGLES2::render_target_set_format_override(RID p_render_target, VS::ViewportFormatOverride p_format) {
+
+	RenderTarget *rt = render_target_owner.getornull(p_render_target);
+	ERR_FAIL_COND(!rt);
+}
+
 bool RasterizerStorageGLES2::render_target_was_used(RID p_render_target) {
 	RenderTarget *rt = render_target_owner.getornull(p_render_target);
 	ERR_FAIL_COND_V(!rt, false);

@@ -455,6 +455,7 @@ public:
 	BIND2(viewport_set_parent_viewport, RID, RID)
 
 	BIND2(viewport_set_clear_mode, RID, ViewportClearMode)
+	BIND2(viewport_set_format_override, RID, ViewportFormatOverride)
 
 	BIND3(viewport_attach_to_screen, RID, const Rect2 &, int)
 	BIND2(viewport_set_render_direct_to_screen, RID, bool)

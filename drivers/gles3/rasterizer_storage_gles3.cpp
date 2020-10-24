@@ -7123,14 +7123,86 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 	bool hdr = rt->flags[RENDER_TARGET_HDR] && config.framebuffer_half_float_supported;
 	//hdr = false;
 
-	if (!hdr || rt->flags[RENDER_TARGET_NO_3D]) {
+	if (rt->format_override != VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_NONE) {
+
+		switch (rt->format_override)
+		{
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGB4:
+				color_internal_format = GL_RGB4;
+				color_format = GL_RGB;
+				color_type = GL_HALF_FLOAT;
+				image_format = Image::FORMAT_RGB8;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGB8:
+				color_internal_format = GL_RGB8;
+				color_format = GL_RGB;
+				color_type = GL_HALF_FLOAT;
+				image_format = Image::FORMAT_RGB8;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_R32F:
+				color_internal_format = GL_R32F;
+				color_format = GL_R;
+				color_type = GL_FLOAT;
+				image_format = Image::FORMAT_RF;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RG32F:
+				color_internal_format = GL_RG32F;
+				color_format = GL_RG;
+				color_type = GL_FLOAT;
+				image_format = Image::FORMAT_RGF;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGB32F:
+				color_internal_format = GL_RGB32F;
+				color_format = GL_RGB;
+				color_type = GL_FLOAT;
+				image_format = Image::FORMAT_RGBF;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGBA32F:
+				color_internal_format = GL_RGBA32F;
+				color_format = GL_RGBA;
+				color_type = GL_FLOAT;
+				image_format = Image::FORMAT_RGBAH;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_R16F:
+				color_internal_format = GL_R16F;
+				color_format = GL_R;
+				color_type = GL_HALF_FLOAT;
+				image_format = Image::FORMAT_RH;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RG16F:
+				color_internal_format = GL_RG16F;
+				color_format = GL_RG;
+				color_type = GL_HALF_FLOAT;
+				image_format = Image::FORMAT_RGH;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGB16F:
+				color_internal_format = GL_RGB16F;
+				color_format = GL_RGB;
+				color_type = GL_HALF_FLOAT;
+				image_format = Image::FORMAT_RGBH;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGBA16F:
+				color_internal_format = GL_RGBA16F;
+				color_format = GL_RGBA;
+				color_type = GL_HALF_FLOAT;
+				image_format = Image::FORMAT_RGBAH;
+				break;
+			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGBA16UI:
+				color_internal_format = GL_RGBA16UI;
+				color_format = GL_RGBA_INTEGER;
+				color_type = GL_UNSIGNED_SHORT;
+				image_format = Image::FORMAT_RGBAF;
+				break;
+		}
+	}
+	else if (!hdr || rt->flags[RENDER_TARGET_NO_3D]) {
 
 		if (rt->flags[RENDER_TARGET_NO_3D_EFFECTS] && !rt->flags[RENDER_TARGET_TRANSPARENT]) {
 			//if this is not used, linear colorspace looks pretty bad
 			//this is the default mode used for mobile
 			color_internal_format = GL_RGB10_A2;
 			color_format = GL_RGBA;
-			color_type = GL_UNSIGNED_INT_2_10_10_10_REV;
+			color_type = GL_UNSIGNED_INT_2_10_10_10_REV;	
 			image_format = Image::FORMAT_RGBA8;
 		} else {
 
@@ -7140,9 +7212,7 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 			image_format = Image::FORMAT_RGBA8;
 		}
 	} else {
-// Addition @samuelbigos - Increase texture format precision
-		color_internal_format = GL_RGBA32F;
-// End addition @samuelbigos
+		color_internal_format = GL_RGBA16F;
 		color_format = GL_RGBA;
 		color_type = GL_HALF_FLOAT;
 		image_format = Image::FORMAT_RGBAH;
@@ -7156,6 +7226,8 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 		glGenFramebuffers(1, &rt->fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo);
 
+		// Don't need depth for 2D, TODO make this a proper option.
+		/*
 		glGenTextures(1, &rt->depth);
 		glBindTexture(GL_TEXTURE_2D, rt->depth);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, rt->width, rt->height, 0,
@@ -7168,6 +7240,7 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 				GL_TEXTURE_2D, rt->depth, 0);
+		*/
 
 		glGenTextures(1, &rt->color);
 		glBindTexture(GL_TEXTURE_2D, rt->color);
@@ -7658,6 +7731,7 @@ void RasterizerStorageGLES3::render_target_set_flag(RID p_render_target, RenderT
 		}
 	}
 }
+
 bool RasterizerStorageGLES3::render_target_was_used(RID p_render_target) {
 
 	RenderTarget *rt = render_target_owner.getornull(p_render_target);
@@ -7684,6 +7758,19 @@ void RasterizerStorageGLES3::render_target_set_msaa(RID p_render_target, VS::Vie
 
 	_render_target_clear(rt);
 	rt->msaa = p_msaa;
+	_render_target_allocate(rt);
+}
+
+void RasterizerStorageGLES3::render_target_set_format_override(RID p_render_target, VS::ViewportFormatOverride p_format) {
+
+	RenderTarget *rt = render_target_owner.getornull(p_render_target);
+	ERR_FAIL_COND(!rt);
+
+	if (rt->format_override == p_format)
+		return;
+
+	_render_target_clear(rt);
+	rt->format_override = p_format;
 	_render_target_allocate(rt);
 }
 

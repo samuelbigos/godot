@@ -138,6 +138,21 @@ public:
 		RENDER_INFO_MAX
 	};
 
+	enum FormatOverride {
+		FORMAT_OVERRIDE_NONE,
+		FORMAT_OVERRIDE_GL_RGB4,
+		FORMAT_OVERRIDE_GL_RGB8,
+		FORMAT_OVERRIDE_GL_R16F,
+		FORMAT_OVERRIDE_GL_RG16F,
+		FORMAT_OVERRIDE_GL_RGB16F,
+		FORMAT_OVERRIDE_GL_RGBA16F,
+		FORMAT_OVERRIDE_GL_R32F,
+		FORMAT_OVERRIDE_GL_RG32F,
+		FORMAT_OVERRIDE_GL_RGB32F,
+		FORMAT_OVERRIDE_GL_RGBA32F,
+		FORMAT_OVERRIDE_GL_RGBA16UI
+	};
+
 	enum DebugDraw {
 		DEBUG_DRAW_DISABLED,
 		DEBUG_DRAW_UNSHADED,
@@ -220,6 +235,8 @@ private:
 	ClearMode clear_mode;
 	bool filter;
 	bool gen_mipmaps;
+
+	FormatOverride format_override;
 
 	bool snap_controls_to_pixels;
 
@@ -482,6 +499,9 @@ public:
 	void set_clear_mode(ClearMode p_mode);
 	ClearMode get_clear_mode() const;
 
+	void set_format_override(FormatOverride p_format);
+	FormatOverride get_format_override() const;
+
 	void set_update_mode(UpdateMode p_mode);
 	UpdateMode get_update_mode() const;
 	Ref<ViewportTexture> get_texture() const;
@@ -588,5 +608,6 @@ VARIANT_ENUM_CAST(Viewport::Usage);
 VARIANT_ENUM_CAST(Viewport::DebugDraw);
 VARIANT_ENUM_CAST(Viewport::ClearMode);
 VARIANT_ENUM_CAST(Viewport::RenderInfo);
+VARIANT_ENUM_CAST(Viewport::FormatOverride);
 
 #endif

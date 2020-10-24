@@ -1264,6 +1264,8 @@ public:
 	virtual void render_target_clear_used(RID p_render_target);
 	virtual void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa);
 
+	virtual void render_target_set_format_override(RID p_render_target, VS::ViewportFormatOverride p_format);
+
 	/* CANVAS SHADOW */
 
 	struct CanvasLightShadow : public RID_Data {

@@ -644,7 +644,24 @@ public:
 		VIEWPORT_CLEAR_ONLY_NEXT_FRAME
 	};
 
+	enum ViewportFormatOverride {
+
+		VIEWPORT_FORMAT_OVERRIDE_NONE,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGB4,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGB8,
+		VIEWPORT_FORMAT_OVERRIDE_GL_R16F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RG16F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGB16F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGBA16F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_R32F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RG32F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGB32F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGBA32F,
+		VIEWPORT_FORMAT_OVERRIDE_GL_RGBA16UI
+	};
+
 	virtual void viewport_set_clear_mode(RID p_viewport, ViewportClearMode p_clear_mode) = 0;
+	virtual void viewport_set_format_override(RID p_viewport, ViewportFormatOverride p_format) = 0;
 
 	virtual RID viewport_get_texture(RID p_viewport) const = 0;
 
