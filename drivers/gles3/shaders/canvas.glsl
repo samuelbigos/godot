@@ -521,7 +521,7 @@ FRAGMENT_SHADER_CODE
 #endif
 
 #if !defined(MODULATE_USED)
-	color *= final_modulate;
+	//color *= final_modulate;
 #endif
 
 #ifdef USE_LIGHTING
