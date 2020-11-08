@@ -1,0 +1,3 @@
+[submodule "modules/godot_delaunay"]
+	path = modules/godot_delaunay
+	url = https://github.com/samuelbigos/godot_delaunay
