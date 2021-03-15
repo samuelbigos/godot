@@ -7128,7 +7128,7 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 		switch (rt->format_override)
 		{
 			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_RGB4:
-				color_internal_format = GL_RGB4;
+				color_internal_format = GL_RGB8;
 				color_format = GL_RGB;
 				color_type = GL_HALF_FLOAT;
 				image_format = Image::FORMAT_RGB8;
@@ -7141,7 +7141,7 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 				break;
 			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_R32F:
 				color_internal_format = GL_R32F;
-				color_format = GL_R;
+				color_format = GL_RED;
 				color_type = GL_FLOAT;
 				image_format = Image::FORMAT_RF;
 				break;
@@ -7165,7 +7165,7 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 				break;
 			case VS::ViewportFormatOverride::VIEWPORT_FORMAT_OVERRIDE_GL_R16F:
 				color_internal_format = GL_R16F;
-				color_format = GL_R;
+				color_format = GL_RED;
 				color_type = GL_HALF_FLOAT;
 				image_format = Image::FORMAT_RH;
 				break;
@@ -7227,20 +7227,20 @@ void RasterizerStorageGLES3::_render_target_allocate(RenderTarget *rt) {
 		glBindFramebuffer(GL_FRAMEBUFFER, rt->fbo);
 
 		// Don't need depth for 2D, TODO make this a proper option.
-		/*
-		glGenTextures(1, &rt->depth);
-		glBindTexture(GL_TEXTURE_2D, rt->depth);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, rt->width, rt->height, 0,
-				GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glGenTextures(1, &rt->depth);
+			glBindTexture(GL_TEXTURE_2D, rt->depth);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, rt->width, rt->height, 0,
+					GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-				GL_TEXTURE_2D, rt->depth, 0);
-		*/
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+					GL_TEXTURE_2D, rt->depth, 0);
+
 
 		glGenTextures(1, &rt->color);
 		glBindTexture(GL_TEXTURE_2D, rt->color);
