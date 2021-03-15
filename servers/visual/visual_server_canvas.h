@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -52,6 +52,7 @@ public:
 		Color ysort_modulate;
 		Transform2D ysort_xform;
 		Vector2 ysort_pos;
+		int ysort_index;
 
 		// Addition @samuelbigos - Added viewport cull mask from @TheDuriel
 		int layer_mask;
@@ -76,6 +77,8 @@ public:
 			// Addition @samuelbigos - Added viewport cull mask from @TheDuriel			
 			layer_mask = 0xffffff;
 			// End addition @samuelbigos
+
+			ysort_index = 0;
 		}
 	};
 
@@ -91,8 +94,9 @@ public:
 
 		_FORCE_INLINE_ bool operator()(const Item *p_left, const Item *p_right) const {
 
-			if (Math::is_equal_approx(p_left->ysort_pos.y, p_right->ysort_pos.y))
-				return p_left->ysort_pos.x < p_right->ysort_pos.x;
+			if (Math::is_equal_approx(p_left->ysort_pos.y, p_right->ysort_pos.y)) {
+				return p_left->ysort_index < p_right->ysort_index;
+			}
 
 			return p_left->ysort_pos.y < p_right->ysort_pos.y;
 		}

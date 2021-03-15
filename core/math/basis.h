@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,7 +36,11 @@
 
 class Basis {
 public:
-	Vector3 elements[3];
+	Vector3 elements[3] = {
+		Vector3(1, 0, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 0, 1)
+	};
 
 	_FORCE_INLINE_ const Vector3 &operator[](int axis) const {
 
@@ -141,8 +145,8 @@ public:
 	}
 
 	bool is_equal_approx(const Basis &p_basis) const;
-	// TODO: Break compatibility in 4.0 by getting rid of this so that it's only an instance method. See also TODO in variant_call.cpp
-	bool is_equal_approx(const Basis &a, const Basis &b) const { return a.is_equal_approx(b); }
+	// For complicated reasons, the second argument is always discarded. See #45062.
+	bool is_equal_approx(const Basis &a, const Basis &b) const { return is_equal_approx(a); }
 	bool is_equal_approx_ratio(const Basis &a, const Basis &b, real_t p_epsilon = UNIT_EPSILON) const;
 
 	bool operator==(const Basis &p_matrix) const;
@@ -257,18 +261,7 @@ public:
 		elements[2] = row2;
 	}
 
-	_FORCE_INLINE_ Basis() {
-
-		elements[0][0] = 1;
-		elements[0][1] = 0;
-		elements[0][2] = 0;
-		elements[1][0] = 0;
-		elements[1][1] = 1;
-		elements[1][2] = 0;
-		elements[2][0] = 0;
-		elements[2][1] = 0;
-		elements[2][2] = 1;
-	}
+	_FORCE_INLINE_ Basis() {}
 };
 
 _FORCE_INLINE_ void Basis::operator*=(const Basis &p_matrix) {
